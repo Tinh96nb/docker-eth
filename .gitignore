@@ -1,0 +1,16 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables file
+.env
+node_modules
+build
+*.lock
+.vscode
+*.log
+.DS_Store
+ipfs

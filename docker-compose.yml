@@ -1,0 +1,33 @@
+version: "3"
+services:
+  dapp:
+    container_name: "Dapp"
+    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "4000:4000"
+    depends_on:
+      - ganache
+      - ipfs
+
+  ganache:
+    container_name: "ganache"
+    build:
+      context: .
+      dockerfile: Dockerfile.ganache
+    ports:
+      - "8545:8545"
+
+  ipfs:
+    container_name: "ipfs"
+    image: ipfs/go-ipfs:latest
+    hostname: ipfs_host
+    volumes:
+    - "./ipfs/export:/export"
+    - "./ipfs/data/ipfs:/data/ipfs"
+    ports:
+    - "5001:5001"
+    - "4001:4001"
+    - "8080:8080"
