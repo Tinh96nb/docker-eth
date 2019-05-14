@@ -3,21 +3,15 @@ const router = express.Router();
 const logic = require("../../ethereum/logic");
 const ipfsClient = require('ipfs-http-client');
 
-const ipfs = ipfsClient('172.22.0.1', '5001', { protocol: 'http' })
+const ipfs = ipfsClient(process.env.IPFS_HOST, '5001', { protocol: 'http' })
 
 
 router.get("/", async (req,res,next) => {
     logic.newdoc(res);
 })
 
-
-// router.get("/", async (req,res,next) => {
-//     let message = 'ds'
-//     res.send(message);
-// })
-
 router.post("/all", async (req,res,next) => {
-    const content = ipfs.Buffer.from('ABC')
+    const content = ipfs.Buffer.from('test')
     const results = await ipfs.add(content)
     res.send(results);
 })

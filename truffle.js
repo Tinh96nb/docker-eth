@@ -1,8 +1,11 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 module.exports = {
   networks: {
     development: {
-      host: "172.22.0.3",
-      port: 8545,
+      host: process.env.GANACHE_HOST,
+      port: process.env.GANACHE_PORT,
       network_id: "*",
       // gas: 4698712,
       // gasPrice: 25000000000

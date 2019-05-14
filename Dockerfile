@@ -1,5 +1,6 @@
-# using node alpine as base image
 FROM node:10.15.3-alpine
+
+LABEL author="phamtinh"
 
 # working dir ./app
 WORKDIR /app
