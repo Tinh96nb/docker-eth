@@ -25,7 +25,7 @@ const newdoc = async (res) => {
       .send({from: accounts[0], gas:3000000}, async (err,tranHash) => {
         console.log(tranHash);
         const res1 = await web3.eth.getTransactionReceipt(tranHash);
-        res.send(res1)
+        res.json(res1)
       })
 };
 

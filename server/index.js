@@ -23,7 +23,7 @@ app.use(
 );
 
 app.use("/", authRouters);
-app.use("/documents", checkAuth(), smartContractAPIRoutes);
+app.use("/documents", checkAuth, smartContractAPIRoutes);
 
 app.use(function(err, req, res, next){
     res.status(422).send({error: err.message});

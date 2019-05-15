@@ -5,8 +5,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('members').insert([
-        {id: 1, address: '123456', hash_private_key: 'hash_key'},
-        {id: 2, address: '234567', hash_private_key: 'hash_key'}
+        {id: 1, address: '123456', role: 'admin'},
+        {id: 2, address: '234567', role: 'members'}
       ]);
     });
 };

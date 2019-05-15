@@ -1,31 +1,29 @@
 const express = require("express");
 const router = express.Router();
-
-const memberRepo = require("../model/member");
+const jwt = require("../helps/jwt");
+const memberRepo = require("../models/member");
 
 router.post("/login", async (req, res, next) => {
   if (!req.body) {
-      res.send(400, { message: 'Address is required.' });
+      res.status(400).json({ message: 'Address is required.' });
       return next();
   }
   const { address } = req.body;
   if (!address) {
-      res.send(400, { message: 'Address is required.' });
+      res.status(400).json({ message: 'Address is required.' });
       return next();
   }
   const user = await memberRepo.findMemberByAddress(address);
-  console.log(user);
-  
   if (!user) {
-      res.send(400, { message: 'Invalid username and password.' });
-      return next();
+    res.status(400).json({ message: `You don't have permission to access!`});
+    return next();
   }
   const payload = {
       id: user.id,
       address: user.address
   };
   const jwtToken = jwt.sign({ payload });
-  res.send({ token: jwtToken });
+  res.json({ token: jwtToken });
 });
 
 module.exports = router;

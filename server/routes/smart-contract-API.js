@@ -5,11 +5,11 @@ const ipfsClient = require('ipfs-http-client');
 
 const ipfs = ipfsClient(process.env.IPFS_HOST, '5001', { protocol: 'http' })
 
-router.get("/", async (req,res,next) => {
+router.get("/", async (req, res, next) => {    
     logic.newdoc(res);
 })
 
-router.post("/all", async (req,res,next) => {
+router.post("/all", async (req, res, next) => {
     const content = ipfs.Buffer.from('test')
     const results = await ipfs.add(content)
     res.send(results);
