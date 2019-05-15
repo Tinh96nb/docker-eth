@@ -11,10 +11,20 @@ services:
     depends_on:
       - ganache
       - ipfs
-      - db
-    networks:
-      default:
-        ipv4_address: ${DAPP_ADDRESS}
+      - database
+  database:
+    container_name: "eth-database"
+    image: "mysql:5.5"
+    ports:
+      - "${DB_PORT}:3306"
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    command:
+      - --innodb_use_native_aio=0
+      - --character-set-server=utf8
+      - --collation-server=utf8_unicode_ci
   ganache:
     container_name: "eth-ganache"
     build:
@@ -39,24 +49,6 @@ services:
     networks:
       default:
         ipv4_address: ${IPFS_HOST}
-  db:
-    container_name: "eth-mysql"
-    image: "mysql:5.5"
-    volumes:
-       - ./db:/struct/
-    ports:
-      - "${DB_PORT}:3306"
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-    command:
-      - --innodb_use_native_aio=0
-      - --character-set-server=utf8
-      - --collation-server=utf8_unicode_ci
-    networks:
-      default:
-        ipv4_address: ${DB_HOST}
 networks:
   default:
     external:
