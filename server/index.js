@@ -7,6 +7,10 @@ const cors = require("cors");
 const app = express();
 
 const smartContractAPIRoutes = require("./routes/smart-contract-API");
+const authRouters = require("./routes/auth-API");
+
+
+const checkAuth = require('./middleware/checkAuth');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,8 +22,8 @@ app.use(
     })
 );
 
-app.use("/", smartContractAPIRoutes);
-
+app.use("/", authRouters);
+app.use("/documents", checkAuth(), smartContractAPIRoutes);
 
 app.use(function(err, req, res, next){
     res.status(422).send({error: err.message});

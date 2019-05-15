@@ -4,7 +4,7 @@ services:
     container_name: "eth-dapp"
     build: .
     volumes:
-      - .:/app
+      - .:/app/
       - /app/node_modules
     ports:
       - "${DAPP_PORT}:${DAPP_PORT}"

@@ -10,7 +10,7 @@ RUN apk update && apk upgrade && apk add --no-cache bash git openssh
 RUN apk add --update python krb5 krb5-libs gcc make g++ krb5-dev
 
 # Copy the package.json
-COPY ./package.json .
+COPY ./package.json ./
 
 # Install the dependencies
 RUN npm install yarn -g
