@@ -13,12 +13,13 @@ RUN apk add --update python krb5 krb5-libs gcc make g++ krb5-dev
 COPY ./package.json ./
 
 # Install the dependencies
-RUN npm install yarn -g
 RUN npm install pm2 -g
-RUN npm install truffle@5.0.5 -g
+RUN npm install yarn -g
 
 # Copy the server and ethereum module
 COPY . .
+
+RUN yarn install
 
 # set the default command
 CMD ["yarn","start"]
