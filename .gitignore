@@ -14,3 +14,4 @@ build
 *.log
 .DS_Store
 ipfs
+db

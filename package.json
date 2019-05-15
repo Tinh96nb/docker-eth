@@ -4,8 +4,8 @@
   "description": "",
   "main": "./server/index.js",
   "scripts": {
-    "test": "truffle test",
-    "db": "./node_modules/.bin/knex migrate:latest",
+    "test:contract": "truffle test",
+    "init:db": "./node_modules/.bin/knex migrate:latest",
     "start": "truffle migrate --reset --compile-all && pm2-dev start ./server/index.js"
   },
   "author": "",

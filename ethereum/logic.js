@@ -1,5 +1,5 @@
 const { web3 } = require("./web3");
-const contractJSON = require("../build/contracts/DocumentManager.json");
+const contractJSON = require("./build/contracts/DocumentManager.json");
 
 const getContract = async  () => {
     const networkId = await web3.eth.net.getId();
