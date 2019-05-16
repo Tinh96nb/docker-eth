@@ -6,9 +6,8 @@ contract DocumentManager {
 
     mapping (uint => Document) documents;
     uint public numDocuments;
-    mapping (uint => User) users;
 
-    enum Status {PENDDING, ACEPTED, REJECTED}
+    enum Status {PENDDING, CLOSE, ACEPTED, REJECTED} // 0,1,2,3
 
     struct Document{
         address owner;
@@ -17,27 +16,35 @@ contract DocumentManager {
         string linkIpfsCrypt;
         string category;
         Status status;
-        uint createdAt;
-    }
-
-    struct User {
-        address owner;
-        string privateKey;
     }
 
     constructor() public {
         admin = msg.sender;
     }
 
+    // event
     event LogCreatedDoc(
         uint indexed _numDoc,
-        address indexed _owner,
+        address _owner,
         string _name,
         string _contentHash,
         string _linkIpfsCrypt,
-        string _category,
-        Status _status,
-        uint _createdAt
+        string _category
+    );
+    event GrantDocument(
+        uint indexed _numDoc,
+        Status _status
+    );
+    event UpdateDocument(
+        uint indexed _numDoc,
+        address _owner,
+        string _name,
+        string _contentHash,
+        string _linkIpfsCrypt,
+        string _category
+    );
+    event DeleteDocument(
+        uint indexed _numDoc
     );
 
     function newDocument(
@@ -47,7 +54,6 @@ contract DocumentManager {
         string _category
     )
         public
-        returns (bool success)
     {
         numDocuments++;
         documents[numDocuments].owner = msg.sender;
@@ -56,20 +62,16 @@ contract DocumentManager {
         documents[numDocuments].linkIpfsCrypt = _linkIpfsCrypt;
         documents[numDocuments].category = _category;
         documents[numDocuments].status = Status.PENDDING;
-        documents[numDocuments].createdAt = block.timestamp;
 
+        // emit
         emit LogCreatedDoc(
             numDocuments,
             msg.sender,
             _name,
             _contentHash,
             _linkIpfsCrypt,
-            _category,
-            Status.PENDDING,
-            block.timestamp
+            _category
         );
-
-        return true;
     }
 
     function grantDocument(
@@ -78,14 +80,55 @@ contract DocumentManager {
     )
         public
     {
-        if(documents[documentId].owner == msg.sender) {
+        if (msg.sender == admin) {
             documents[documentId].status = status;
+            emit GrantDocument(documentId, status);
         }
     }
 
-    // function setInfoUser(string privateKey) public {
-    //     save(hashPashh)
-    // }
+    function deleteDocument(
+        uint documentId
+    )
+        public
+    {
+        if (msg.sender == documents[documentId].owner) {
+            documents[numDocuments].name = "";
+            documents[numDocuments].contentHash = "";
+            documents[numDocuments].linkIpfsCrypt = "";
+            documents[numDocuments].category = "";
+            documents[numDocuments].status = Status.CLOSE;
+            // emit
+            emit DeleteDocument(numDocuments);
+        }
+    }
+
+    function updateDocument(
+        uint documentId,
+        string _name,
+        string _contentHash,
+        string _linkIpfsCrypt,
+        string _category
+    )
+        public
+    {
+        if (msg.sender == documents[documentId].owner) {
+            documents[documentId].name = _name;
+            documents[documentId].contentHash = _contentHash;
+            documents[documentId].linkIpfsCrypt = _linkIpfsCrypt;
+            documents[documentId].category = _category;
+            documents[documentId].status = Status.PENDDING;
+
+            //emit
+            emit UpdateDocument(
+                numDocuments,
+                msg.sender,
+                _name,
+                _contentHash,
+                _linkIpfsCrypt,
+                _category
+            );
+        }
+    }
 
     function getDocumentByIndex(
         uint documentId
@@ -98,8 +141,7 @@ contract DocumentManager {
             string _contentHash,
             string _linkIpfsCrypt,
             string _category,
-            Status _status,
-            uint _createdAt
+            Status _status
         )
     {
         return (
@@ -108,34 +150,7 @@ contract DocumentManager {
             documents[documentId].contentHash,
             documents[documentId].linkIpfsCrypt,
             documents[numDocuments].category,
-            documents[numDocuments].status,
-            documents[documentId].createdAt
-        );
-    }
-
-    function getLastestDocument()
-        public
-        view
-        returns (
-            uint _numDoc,
-            address _owner,
-            string _name,
-            string _contentHash,
-            string _linkIpfsCrypt,
-            string _category,
-            Status _status,
-            uint _createdAt
-        )
-    {
-        return (
-            numDocuments,
-            documents[numDocuments].owner,
-            documents[numDocuments].name,
-            documents[numDocuments].contentHash,
-            documents[numDocuments].linkIpfsCrypt,
-             documents[numDocuments].category,
-            documents[numDocuments].status,
-            documents[numDocuments].createdAt
+            documents[numDocuments].status
         );
     }
 }

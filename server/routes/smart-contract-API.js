@@ -9,12 +9,10 @@ router.get('/', async (req, res, next) => {
   logic.newDocument(res)
 })
 
-router.get('/ipfs', async (req, res, next) => {
-  const content = ipfs.Buffer.from('test')
+router.post('/ipfs1', async (req, res, next) => {
+  const content = ipfs.Buffer.from('tes23t')
   const results = await ipfs.add(content)
-  console.log(results)
-
-  res.send('message')
+  res.json(results)
 })
 
 router.get('/all', async (req, res, next) => {

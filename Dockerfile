@@ -15,11 +15,10 @@ COPY ./package.json ./
 # Install the dependencies
 RUN npm install pm2 -g
 RUN npm install yarn -g
+RUN yarn install
 
 # Copy the server and ethereum module
 COPY . .
-
-RUN yarn install
 
 # set the default command
 CMD ["yarn","start"]
