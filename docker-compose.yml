@@ -25,6 +25,9 @@ services:
       - --innodb_use_native_aio=0
       - --character-set-server=utf8
       - --collation-server=utf8_unicode_ci
+    networks:
+      default:
+        ipv4_address: ${DB_HOST}
   ganache:
     container_name: "eth-ganache"
     build:
