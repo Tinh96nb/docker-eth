@@ -1,5 +1,5 @@
-var DocumentManager = artifacts.require("DocumentManager.sol");
+var DocumentManager = artifacts.require('DocumentManager.sol')
 
-module.exports = function(deployer) {
-  deployer.deploy(DocumentManager);
-};
+module.exports = function (deployer) {
+  deployer.deploy(DocumentManager)
+}
