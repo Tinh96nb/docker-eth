@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require('dotenv')
+dotenv.config()
 
 module.exports = {
   development: {
@@ -17,4 +17,4 @@ module.exports = {
       max: 10
     }
   }
-};
+}

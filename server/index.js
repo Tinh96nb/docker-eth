@@ -9,7 +9,8 @@ const app = express()
 const smartContractAPIRoutes = require('./routes/smart-contract-API')
 const authRouters = require('./routes/auth-API')
 
-const checkAuth = require('./middleware/checkAuth')
+// const checkAuth = require('./middleware/check-auth')
+const checkRole = require('./middleware/check-role')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -22,7 +23,8 @@ app.use(
 )
 
 app.use('/', authRouters)
-app.use('/documents', checkAuth, smartContractAPIRoutes)
+app.use('/documents', smartContractAPIRoutes)
+app.use('/admin', checkRole, smartContractAPIRoutes)
 
 app.use(function (err, req, res, next) {
   res.status(422).send({ error: err.message })

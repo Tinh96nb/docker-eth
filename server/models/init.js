@@ -1,13 +1,16 @@
 'use strict'
 const knex = require('../knex')
-const logic = require('../../ethereum/logic')
+const contractApi = require('../smart-contract')
 
 const initDb = async () => {
+  await knex('transactions').truncate()
+  await knex('documents').truncate()
+  await knex('categories').truncate()
   await knex('members').truncate()
 }
 
 const insertMembers = async () => {
-  const members = await logic.getAccounts()
+  const members = await contractApi.getAccounts()
   const convertField = members.map((mem, index) => {
     if (index === 0) {
       return { address: mem, role: 'admin' }

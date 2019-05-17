@@ -1,4 +1,8 @@
-client/
+client/**
+ipfs/**
+Dockerfile*
+Dockerfile.*
+ipfs
 .git
 *-lock.json
 npm-debug.log

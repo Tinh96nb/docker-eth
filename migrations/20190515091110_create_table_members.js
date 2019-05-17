@@ -4,7 +4,7 @@ exports.up = async function (knex, Promise) {
     table.increments()
     table.string('address', 42).unique()
     table.string('role', 10)
-  });
+  })
 }
 exports.down = function (knex, Promise) {
   return knex.schema.dropTable('members')
