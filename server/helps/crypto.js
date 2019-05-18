@@ -1,11 +1,18 @@
-'use strict'
-Object.defineProperty(exports, '__esModule', { value: true })
 const crypto = require('crypto')
-function md5 (data) {
-  return crypto.createHash('md5').update(data, 'utf8').digest('hex')
+const algorithm = 'aes-256-cbc'
+const key = crypto.randomBytes(32)
+
+function encryptAes (text) {
+  return 'content Encrypt'
 }
-exports.md5 = md5
-function sha256 (data) {
-  return crypto.createHash('sha256').update(data, 'utf8').digest('hex')
+
+function decryptAes (text) {
+  let iv = Buffer.from(text.iv, 'hex')
+  let encryptedText = Buffer.from(text.encryptedData, 'hex')
+  let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv)
+  let decrypted = decipher.update(encryptedText)
+  decrypted = Buffer.concat([decrypted, decipher.final()])
+  return decrypted.toString()
 }
-exports.sha256 = sha256
+
+module.exports = { decryptAes, encryptAes }

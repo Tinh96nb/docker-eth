@@ -10,8 +10,8 @@ services:
       - "${DAPP_PORT}:${DAPP_PORT}"
     depends_on:
       - ganache
-      - ipfs
       - database
+      - ipfs
   database:
     container_name: "eth-database"
     image: "mysql:5.5"
@@ -42,9 +42,6 @@ services:
     container_name: "eth-ipfs"
     image: ipfs/go-ipfs:latest
     hostname: ipfs_host
-    volumes:
-    - "./ipfs/export:/export"
-    - "./ipfs/data/ipfs:/data/ipfs"
     ports:
     - "${IPFS_PORT_UI}:5001"
     - "4001:4001"

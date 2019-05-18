@@ -1,20 +1,31 @@
 const express = require('express')
 const router = express.Router()
-// const ipfsClient = require('ipfs-http-client')
+const { saveToIpfs, getFromIpfs } = require('../helps/ipfs')
 const contractApi = require('../smart-contract')
-// const ipfs = ipfsClient(process.env.IPFS_HOST, '5001', { protocol: 'http' })
-// const memberRepo = require('../models/member')
+const memberRepo = require('../models/member')
 
 router.post('/', async (req, res, next) => {
-  // const content = ipfs.Buffer.from('abcd')
-  // const result = await ipfs.add(content)
+  const { name = 'jh', file_content = '', category = '1' } = req.body
+  // await saveToIpfs(file_content)
   const params = {
-    name: 'name',
+    name: name,
     hash: 'hash',
-    link: 'result',
-    category: 'tham khao'
+    link: 'result.ipfsCrypt',
+    category: category
   }
   return contractApi.newDocument(params, res)
+})
+
+router.get('/', async (req, res, next) => {
+  const linkIpfsCrypt = req.query.id
+  const result = await getFromIpfs(linkIpfsCrypt)
+  return res.json(result)
+})
+
+router.get('/file', async (req, res, next) => {
+  const linkIpfsCrypt = req.query.id
+  const result = await getFromIpfs(linkIpfsCrypt)
+  return res.json(result)
 })
 
 module.exports = router

@@ -8,7 +8,14 @@ const findMemberByAddress = async (memberAddress) => {
 const getListMember = async () => {
   return knex.select().table('members')
 }
+
+const changeStatus = async (id, status) => {
+  return knex.select().table('members')
+    .where(id)
+    .update({ status })
+}
 module.exports = {
   findMemberByAddress,
-  getListMember
+  getListMember,
+  changeStatus
 }
