@@ -35,12 +35,12 @@ contract('DocumentManager', async ([owner, mem]) => {
     // get block mined
     const docBlockMined = await documentManager.getDocumentByIndex(dataSeed.numDoc)
 
-    const ownerResult = docBlockMined._owner
-    const nameDocResult = docBlockMined._name
-    const hashContentResult = docBlockMined._contentHash
-    const cryptLinkResult = docBlockMined._linkIpfsCrypt
-    const statusResult = docBlockMined._status
-    const categoryResult = docBlockMined._category
+    const ownerResult = docBlockMined.owner
+    const nameDocResult = docBlockMined.name
+    const hashContentResult = docBlockMined.contentHash
+    const cryptLinkResult = docBlockMined.linkIpfsCrypt
+    const statusResult = docBlockMined.status
+    const categoryResult = docBlockMined.category
 
     assert.equal(ownerResult, mem)
     assert.equal(nameDocResult, dataSeed.nameDoc)
@@ -58,7 +58,7 @@ contract('DocumentManager', async ([owner, mem]) => {
     // Admin change status
     await documentManager.grantDocument(dataSeed.numDoc, status.ACEPTED, { from: owner })
     const docBlockChanged = await documentManager.getDocumentByIndex(dataSeed.numDoc)
-    assert.equal(docBlockChanged._status, status.ACEPTED)
+    assert.equal(docBlockChanged.status, status.ACEPTED)
   })
 
   it('member close document will null, status clode', async () => {
@@ -68,7 +68,7 @@ contract('DocumentManager', async ([owner, mem]) => {
     )
     await documentManager.deleteDocument(dataSeed.numDoc, { from: mem })
     const docBlockChanged = await documentManager.getDocumentByIndex(dataSeed.numDoc)
-    assert.equal(docBlockChanged._status, status.CLOSE)
+    assert.equal(docBlockChanged.status, status.CLOSE)
   })
 
   it('member not is owner document when close then status doc still pendding', async () => {
@@ -78,7 +78,7 @@ contract('DocumentManager', async ([owner, mem]) => {
     )
     await documentManager.deleteDocument(dataSeed.numDoc, { from: owner })
     const docBlockChanged = await documentManager.getDocumentByIndex(dataSeed.numDoc)
-    assert.equal(docBlockChanged._status, status.PENDDING)
+    assert.equal(docBlockChanged.status, status.PENDDING)
   })
 
   it('member create doc -> admin acept doc (now doc status is acept), then mem update document -> status doc is pendding', async () => {
@@ -89,7 +89,7 @@ contract('DocumentManager', async ([owner, mem]) => {
     // Admin change status
     await documentManager.grantDocument(dataSeed.numDoc, status.ACEPTED, { from: owner })
     const docChangeStatus = await documentManager.getDocumentByIndex(dataSeed.numDoc)
-    assert.equal(docChangeStatus._status, status.ACEPTED)
+    assert.equal(docChangeStatus.status, status.ACEPTED)
     // member update
     const dataChange = {
       idDoc: 1,
@@ -104,7 +104,7 @@ contract('DocumentManager', async ([owner, mem]) => {
     )
     // test status
     const docChanged = await documentManager.getDocumentByIndex(dataSeed.numDoc)
-    assert.equal(docChanged._status, status.PENDDING)
-    assert.equal(docChanged._name, dataChange.nameDoc)
+    assert.equal(docChanged.status, status.PENDDING)
+    assert.equal(docChanged.name, dataChange.nameDoc)
   })
 })

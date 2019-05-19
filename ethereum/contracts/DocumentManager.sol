@@ -24,27 +24,27 @@ contract DocumentManager {
 
     // event
     event LogCreatedDoc(
-        uint indexed _numDoc,
-        address _owner,
-        string _name,
-        string _contentHash,
-        string _linkIpfsCrypt,
-        string _category
+        uint indexed numDoc,
+        address owner,
+        string name,
+        string contentHash,
+        string linkIpfsCrypt,
+        string category
     );
     event GrantDocument(
-        uint indexed _numDoc,
-        Status _status
+        uint indexed numDoc,
+        Status status
     );
     event UpdateDocument(
-        uint indexed _numDoc,
-        address _owner,
-        string _name,
-        string _contentHash,
-        string _linkIpfsCrypt,
-        string _category
+        uint indexed numDoc,
+        address owner,
+        string name,
+        string contentHash,
+        string linkIpfsCrypt,
+        string category
     );
     event DeleteDocument(
-        uint indexed _numDoc
+        uint indexed numDoc
     );
 
     function newDocument(
@@ -136,12 +136,12 @@ contract DocumentManager {
         public
         view
         returns (
-            address _owner,
-            string _name,
-            string _contentHash,
-            string _linkIpfsCrypt,
-            string _category,
-            Status _status
+            address owner,
+            string name,
+            string contentHash,
+            string linkIpfsCrypt,
+            string category,
+            Status status
         )
     {
         return (
@@ -149,6 +149,31 @@ contract DocumentManager {
             documents[documentId].name,
             documents[documentId].contentHash,
             documents[documentId].linkIpfsCrypt,
+            documents[numDocuments].category,
+            documents[numDocuments].status
+        );
+    }
+
+    function getLatestDocument(
+    )
+        public
+        view
+        returns (
+            uint documentId,
+            address owner,
+            string name,
+            string contentHash,
+            string linkIpfsCrypt,
+            string category,
+            Status status
+        )
+    {
+        return (
+            numDocuments,
+            documents[numDocuments].owner,
+            documents[numDocuments].name,
+            documents[numDocuments].contentHash,
+            documents[numDocuments].linkIpfsCrypt,
             documents[numDocuments].category,
             documents[numDocuments].status
         );

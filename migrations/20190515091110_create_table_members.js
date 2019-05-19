@@ -3,7 +3,7 @@ exports.up = async function (knex, Promise) {
   return knex.schema.createTable('members', function (table) {
     table.increments()
     table.string('address', 42).unique()
-    table.string('role', 10)
+    table.string('role', 10).defaultTo('member')
     table.string('status').defaultTo(1)
   })
 }

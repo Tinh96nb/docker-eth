@@ -16,8 +16,15 @@ const updateCategory = async (id, objectData) => {
     .update({ objectData })
 }
 
+const deleteCategory = async (id) => {
+  return knex.select().table('categories')
+    .where('id', id)
+    .del()
+}
+
 module.exports = {
   listCategory,
   createCategory,
-  updateCategory
+  updateCategory,
+  deleteCategory
 }

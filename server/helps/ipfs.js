@@ -7,12 +7,12 @@ const {
 
 const saveToIpfs = async (base64File) => {
   const contentCrypt = encryptAes(base64File)
-  const bufferContent = ipfs.Buffer.from('contentCrypt')
+  const bufferContent = ipfs.Buffer.from(contentCrypt)
   return ipfs.add(bufferContent)
     .then((response) => {
       return {
-        ipfs: response[0].path,
-        ipfsCrypt: encryptAes(response[0].path)
+        link: response[0].path,
+        linkCrypt: encryptAes(response[0].path)
       }
     })
     .catch((err) => {
@@ -22,14 +22,13 @@ const saveToIpfs = async (base64File) => {
 
 const getFromIpfs = async (ipfsCrypt) => {
   const ipfsId = await decryptAes(ipfsCrypt)
-  console.log(ipfsId)
-  return ipfsId
-  // const file = await ipfs.get(ipfsId)
-  // if (file.length && file[0].content) {
-  //   const contentHex = file[0].content.toString('hex')
-  //   const contentBase64 = decryptAes(contentHex)
-  //   return contentBase64
-  // }
+  const file = await ipfs.get(ipfsId)
+  if (file.length && file[0].content) {
+    const content = file[0].content.toString()
+    const contentBase64 = decryptAes(content)
+    return contentBase64
+  }
+  return null
 }
 
 module.exports = {

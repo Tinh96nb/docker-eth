@@ -2,12 +2,18 @@ const jwt = require('../helps/jwt')
 const memberRepo = require('../models/member')
 
 const checkAuth = () => async (req, res, next) => {
-  if (!req.headers || !req.headers.authorization) {
-    res.status(400).json({ message: 'Token is required!' })
-    return false
+  let requestToken = ''
+  const accessToken = req.query.access_token
+  if (accessToken) {
+    requestToken = accessToken
+  } else {
+    if (!req.headers || !req.headers.authorization) {
+      res.status(400).json({ message: 'Token is required!' })
+    }
+    requestToken = req.headers.authorization.split(' ')[1]
   }
-  const token = jwt.verify(req.headers.authorization.split(' ')[1])
   // check valid token
+  const token = jwt.verify(requestToken)
   if (!token) {
     res.status(400).json({ message: 'Token is invalid!' })
     return false

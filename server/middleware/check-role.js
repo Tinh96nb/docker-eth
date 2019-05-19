@@ -2,20 +2,22 @@ const jwt = require('../helps/jwt')
 const memberRepo = require('../models/member')
 
 const checkRole = () => async (req, res, next) => {
-  if (!req.headers || !req.headers.authorization) {
-    res.status(400).json({ message: 'Token is required!' })
-    return false
+  let requestToken = ''
+  const accessToken = req.query.access_token
+  if (accessToken) {
+    requestToken = accessToken
+  } else {
+    if (!req.headers || !req.headers.authorization) {
+      res.status(400).json({ message: 'Token is required!' })
+    }
+    requestToken = req.headers.authorization.split(' ')[1]
   }
-  const token = jwt.verify(req.headers.authorization.split(' ')[1])
   // check valid token
-  if (!token) {
-    res.status(400).json({ message: 'Token is invalid!' })
-    return false
-  }
+  const token = jwt.verify(requestToken)
   // check in database
   const { payload } = token
   const mem = await memberRepo.findMemberByAddress(payload.address)
-  if (mem && payload.role === 'admin') {
+  if (mem && mem.role === 'admin') {
     res.locals.member = mem
     return next()
   }

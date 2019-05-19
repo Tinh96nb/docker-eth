@@ -2,6 +2,7 @@ exports.up = async function (knex, Promise) {
   await knex.schema.dropTableIfExists('documents')
   return knex.schema.createTable('documents', function (table) {
     table.integer('u_id').unsigned().unique().primary()
+    table.string('name')
     table.string('owner', 42)
     table.string('content_hash')
     table.string('link_ipfs_crypt')
