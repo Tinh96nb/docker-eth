@@ -27,6 +27,15 @@ router.get('/', async (req, res, next) => {
   res.json(documents)
 })
 
+router.get('/:id', async (req, res, next) => {
+  const { id } = req.params
+  const document = await documentRepo.getDocById(id)
+  if (!document) {
+    res.status(400).json({ message: 'Document not found!' })
+  }
+  res.json(document)
+})
+
 router.get('/file/:docId', async (req, res, next) => {
   const { docId } = req.params
   const docInfo = await documentRepo.getDocById(docId)
