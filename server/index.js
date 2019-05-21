@@ -8,6 +8,7 @@ const app = express()
 
 const authRouters = require('./routes/auth-API')
 const documentRoutes = require('./routes/document-API')
+const memberRoutes = require('./routes/member-API')
 const adminRoutes = require('./routes/admin-API')
 
 const checkAuth = require('./middleware/check-auth')
@@ -25,6 +26,7 @@ app.use(
 
 app.use('/', authRouters)
 app.use('/documents', checkAuth, documentRoutes)
+app.use('/members', checkAuth, memberRoutes)
 app.use('/admin', checkRole, adminRoutes)
 
 app.use(function (err, req, res, next) {

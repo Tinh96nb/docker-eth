@@ -11,7 +11,7 @@ module.exports = {
 }
 
 async function getAccounts () {
-  return memberRepo.getListMember()
+  return web3.eth.getAccounts()
 }
 
 async function newDocument (params, res) {
