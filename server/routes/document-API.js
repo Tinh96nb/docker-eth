@@ -6,8 +6,17 @@ const { statusDocument } = require('../helps/const')
 const contractApi = require('../smart-contract')
 const documentRepo = require('../models/document')
 
-router.post('/', async (req, res, next) => {
-  const { name = '', file_content = '', category = '1' } = req.body
+router.post('/', async function createDoc (req, res, next) {
+  const {
+    name = '',
+    file_content = '',
+    category = 1,
+    size = 0,
+    description = ''
+  } = req.body
+  if (!file_content.length) {
+    res.status(400).json({ message: 'file input required!' })
+  }
   const base64File = file_content.split(',')[1]
   const hash = sha1(base64File)
   const ipfs = await saveToIpfs(base64File)
@@ -17,17 +26,19 @@ router.post('/', async (req, res, next) => {
     hash: hash,
     link: ipfs.link,
     linkCrypt: ipfs.linkCrypt,
-    category: category
+    category: category,
+    size,
+    description
   }
   return contractApi.newDocument(params, res)
 })
 
-router.get('/', async (req, res, next) => {
+router.get('/', async function getListDoc (req, res, next) {
   const documents = await documentRepo.listDocument()
   res.json(documents)
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async function getViewDoc (req, res, next) {
   const { id } = req.params
   const document = await documentRepo.getDocById(id)
   if (!document) {
@@ -36,7 +47,52 @@ router.get('/:id', async (req, res, next) => {
   res.json(document)
 })
 
-router.get('/file/:docId', async (req, res, next) => {
+router.delete('/:id', async function deleteDoc (req, res, next) {
+  const { id } = req.params
+  const document = await documentRepo.getDocById(id)
+  if (!document) {
+    res.status(400).json({ message: 'Document not found!' })
+  }
+  const params = {
+    docId: id,
+    address: res.locals.member.address
+  }
+  contractApi.deleteDocument(params, res)
+})
+
+router.put('/:id', async function updateDoc (req, res, next) {
+  const { id } = req.params
+  const document = await documentRepo.getDocById(id)
+  if (!document) {
+    res.status(400).json({ message: 'Document not found!' })
+  }
+  const {
+    name = document.name,
+    file_content = '',
+    category = document.category_id,
+    size = document.size,
+    description = document.description
+  } = req.body
+  let hash; let ipfs = ''
+  if (file_content.length) {
+    const base64File = file_content.split(',')[1]
+    hash = sha1(base64File)
+    ipfs = await saveToIpfs(base64File)
+  }
+  const params = {
+    docId: id,
+    address: res.locals.member.address,
+    name: name,
+    hash: file_content.length ? hash : document.content_hash,
+    linkCrypt: file_content.length ? ipfs.linkCrypt : document.link_ipfs_crypt,
+    category: category,
+    size,
+    description
+  }
+  return contractApi.updateDocument(params, res)
+})
+
+router.get('/file/:docId', async function downloadDoc (req, res, next) {
   const { docId } = req.params
   const docInfo = await documentRepo.getDocById(docId)
   if (!docInfo) {

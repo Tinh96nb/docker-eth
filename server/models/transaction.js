@@ -13,11 +13,18 @@ const createTrans = async (objectData) => {
 const updateTrans = async (docId, objectData) => {
   return knex.select().table('transactions')
     .where('document_id', docId)
-    .update({ objectData })
+    .update(objectData)
+}
+
+const deleteTrans = async (docId) => {
+  return knex.select().table('transactions')
+    .where('document_id', docId)
+    .del()
 }
 
 module.exports = {
   getTransByDocId,
   createTrans,
-  updateTrans
+  updateTrans,
+  deleteTrans
 }

@@ -6,6 +6,8 @@ exports.up = async function (knex, Promise) {
     table.string('owner', 42)
     table.string('content_hash')
     table.string('link_ipfs_crypt')
+    table.integer('size')
+    table.string('description')
     table.integer('category_id').unsigned()
     table.string('status')
     table.timestamp('created_at').defaultTo(knex.fn.now())

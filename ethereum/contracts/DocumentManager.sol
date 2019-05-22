@@ -14,7 +14,7 @@ contract DocumentManager {
         string name;
         string contentHash;
         string linkIpfsCrypt;
-        string category;
+        uint category;
         Status status;
     }
 
@@ -29,7 +29,7 @@ contract DocumentManager {
         string name,
         string contentHash,
         string linkIpfsCrypt,
-        string category
+        uint category
     );
     event GrantDocument(
         uint indexed numDoc,
@@ -41,7 +41,7 @@ contract DocumentManager {
         string name,
         string contentHash,
         string linkIpfsCrypt,
-        string category
+        uint category
     );
     event DeleteDocument(
         uint indexed numDoc
@@ -51,7 +51,7 @@ contract DocumentManager {
         string _name,
         string _contentHash,
         string _linkIpfsCrypt,
-        string _category
+        uint _category
     )
         public
     {
@@ -95,7 +95,7 @@ contract DocumentManager {
             documents[numDocuments].name = "";
             documents[numDocuments].contentHash = "";
             documents[numDocuments].linkIpfsCrypt = "";
-            documents[numDocuments].category = "";
+            documents[numDocuments].category = 0;
             documents[numDocuments].status = Status.CLOSE;
             // emit
             emit DeleteDocument(numDocuments);
@@ -107,7 +107,7 @@ contract DocumentManager {
         string _name,
         string _contentHash,
         string _linkIpfsCrypt,
-        string _category
+        uint _category
     )
         public
     {
@@ -140,7 +140,7 @@ contract DocumentManager {
             string name,
             string contentHash,
             string linkIpfsCrypt,
-            string category,
+            uint category,
             Status status
         )
     {
@@ -164,7 +164,7 @@ contract DocumentManager {
             string name,
             string contentHash,
             string linkIpfsCrypt,
-            string category,
+            uint category,
             Status status
         )
     {

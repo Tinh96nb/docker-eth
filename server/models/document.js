@@ -39,7 +39,7 @@ const changeStatus = async (id, status) => {
 const updateDocument = async (id, objectData) => {
   return knex.select().table('documents')
     .where('u_id', id)
-    .update({ objectData })
+    .update(objectData)
 }
 
 const deleteDocument = async (id) => {
@@ -49,6 +49,9 @@ const deleteDocument = async (id) => {
 }
 
 async function addColumnTrans (row) {
+  if (!row) {
+    return null
+  }
   const transaction = await knex.select()
     .from('transactions')
     .where('document_id', row.u_id)
