@@ -9,7 +9,7 @@ exports.up = async function (knex, Promise) {
     table.integer('size')
     table.string('description')
     table.integer('category_id').unsigned()
-    table.string('status')
+    table.integer('status')
     table.timestamp('created_at').defaultTo(knex.fn.now())
   })
 }

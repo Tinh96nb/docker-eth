@@ -4,7 +4,8 @@ exports.up = async function (knex, Promise) {
     table.increments()
     table.string('address', 42).unique()
     table.string('role', 10).defaultTo('member')
-    table.string('status').defaultTo(1)
+    table.integer('status').defaultTo(1)
+    table.timestamp('created_at').defaultTo(knex.fn.now())
   })
 }
 exports.down = function (knex, Promise) {

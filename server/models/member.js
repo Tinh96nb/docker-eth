@@ -4,7 +4,10 @@ const knex = require('../knex')
 const contractApi = require('../smart-contract')
 
 const findMemberByAddress = async (memberAddress) => {
-  return knex.select().from('members').where('address', memberAddress).first().then(getBalance)
+  return knex.select().from('members')
+    .where('address', memberAddress)
+    .first().then(getBalance)
+    .then(getNumdoc)
 }
 
 const createNewMember = async (objData) => {
@@ -12,9 +15,13 @@ const createNewMember = async (objData) => {
 }
 
 const getListMember = async () => {
-  return knex.select().table('members').then(async (rows) => {
-    return Promise.all(rows.map(async (row) => getBalance(row)))
-  })
+  return knex.select().table('members')
+    .then(async (rows) => {
+      return Promise.all(rows.map(async (row) => getBalance(row)))
+    })
+    .then(async (rows) => {
+      return Promise.all(rows.map(async (row) => getNumdoc(row)))
+    })
 }
 
 const changeStatus = async (id, status) => {
@@ -29,6 +36,18 @@ async function getBalance (member) {
   return {
     ...member,
     balance
+  }
+}
+
+async function getNumdoc (member) {
+  if (!member) return null
+  const result = await knex('documents')
+    .count('u_id as numDoc')
+    .where('owner', member.address).first()
+
+  return {
+    ...member,
+    num_doc: result.numDoc
   }
 }
 module.exports = {

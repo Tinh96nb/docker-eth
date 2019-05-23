@@ -1,8 +1,8 @@
 const statusDocument = {
-  PENDDING: 1,
-  CLOSE: 2,
-  ACEPTED: 3,
-  REJECTED: 4
+  PENDDING: 0,
+  CLOSE: 1,
+  ACEPTED: 2,
+  REJECTED: 3
 }
 
 module.exports = {

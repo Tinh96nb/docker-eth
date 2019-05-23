@@ -8,7 +8,7 @@ exports.up = async function (knex, Promise) {
     table.string('block_hash')
     table.string('from')
     table.integer('gas_used')
-    table.string('status')
+    table.integer('status')
     table.timestamp('created_at').defaultTo(knex.fn.now())
   })
 }
