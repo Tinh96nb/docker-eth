@@ -5,6 +5,7 @@ const memberRepo = require('../models/member')
 
 module.exports = {
   getAccounts,
+  getBalance,
   newDocument,
   adminChangeStatus,
   createNewAcc,
@@ -14,6 +15,10 @@ module.exports = {
 
 async function getAccounts () {
   return web3.eth.getAccounts()
+}
+
+async function getBalance (address) {
+  return web3.eth.getBalance(address)
 }
 
 async function newDocument (params, res) {

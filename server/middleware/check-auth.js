@@ -8,7 +8,7 @@ const checkAuth = () => async (req, res, next) => {
     requestToken = accessToken
   } else {
     if (!req.headers || !req.headers.authorization) {
-      res.status(400).json({ message: 'Token is required!' })
+      return res.status(400).json({ message: 'Token is required!' })
     }
     requestToken = req.headers.authorization.split(' ')[1]
   }

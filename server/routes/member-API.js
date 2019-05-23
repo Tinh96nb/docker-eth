@@ -12,4 +12,9 @@ router.post('/me', async (req, res, next) => {
   res.json({ profile: user })
 })
 
+router.get('/', async (req, res, next) => {
+  const members = await memberRepo.getListMember()
+  res.json(members)
+})
+
 module.exports = router
