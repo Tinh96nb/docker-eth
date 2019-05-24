@@ -2,28 +2,24 @@
 
 const knex = require('../knex')
 
-const listDocument = async () => {
-  return knex.select().from('documents').then(async (rows) => {
+const listDocument = async ({ name = null, owner = null, categoryId = null }) => {
+  let query = knex.select().from('documents')
+  if (name) {
+    query = query.where('name', 'like', `%${name}%`)
+  }
+  if (owner) {
+    query = query.where('owner', owner)
+  }
+  if (categoryId) {
+    query = query.where('category_id', categoryId)
+  }
+  return query.then(async (rows) => {
     return Promise.all(rows.map(async (row) => addColumnTrans(row)))
   })
 }
 
 const getDocById = async (id) => {
   return knex.select().table('documents').where('u_id', id).first().then(addColumnTrans)
-}
-
-const getDocsByOwner = async (owner) => {
-  return knex.select().table('documents').where('owner', owner)
-    .then(async (rows) => {
-      return Promise.all(rows.map(async (row) => addColumnTrans(row)))
-    })
-}
-
-const getDocsByCategoryId = async (categoryId) => {
-  return knex.select().table('documents').where('category_id', categoryId)
-    .then(async (rows) => {
-      return Promise.all(rows.map(async (row) => addColumnTrans(row)))
-    })
 }
 
 const createDocument = async (objectData) => {
@@ -70,8 +66,6 @@ async function addColumnTrans (row) {
 module.exports = {
   listDocument,
   getDocById,
-  getDocsByOwner,
-  getDocsByCategoryId,
   createDocument,
   changeStatus,
   updateDocument,

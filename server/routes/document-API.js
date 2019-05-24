@@ -34,7 +34,7 @@ router.post('/', async function createDoc (req, res, next) {
 })
 
 router.get('/', async function getListDoc (req, res, next) {
-  const documents = await documentRepo.listDocument()
+  const documents = await documentRepo.listDocument(req.query)
   res.json(documents)
 })
 

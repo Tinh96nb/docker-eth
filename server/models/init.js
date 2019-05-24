@@ -5,7 +5,6 @@ const contractApi = require('../smart-contract')
 const initDb = async () => {
   await knex('transactions').truncate()
   await knex('documents').truncate()
-  await knex('categories').truncate()
   await knex('members').truncate()
 }
 
@@ -19,6 +18,7 @@ const insertMembers = async () => {
   })
   try {
     await knex('members').insert(convertField)
+    await knex('categories').insert({ name: 'Others' })
     console.log('Insert members susscess!')
   } catch (error) {
     console.log('Import members error!')
