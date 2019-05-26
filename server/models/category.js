@@ -30,7 +30,7 @@ const deleteCategory = async (id) => {
 
 async function getNumDoc (category) {
   if (!category) return null
-  const result = await knex('documents').count('u_id as numDoc').where('category_id', category.id).first()
+  const result = await knex('documents').count('id as numDoc').where('category_id', category.id).first()
   return {
     ...category,
     num_doc: result.numDoc

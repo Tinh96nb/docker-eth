@@ -19,7 +19,7 @@ const listDocument = async ({ name = null, owner = null, categoryId = null }) =>
 }
 
 const getDocById = async (id) => {
-  return knex.select().table('documents').where('u_id', id).first().then(addColumnTrans)
+  return knex.select().table('documents').where('id', id).first().then(addColumnTrans)
 }
 
 const createDocument = async (objectData) => {
@@ -28,19 +28,19 @@ const createDocument = async (objectData) => {
 
 const changeStatus = async (id, status) => {
   return knex.select().table('documents')
-    .where('uid', id)
+    .where('id', id)
     .update({ status })
 }
 
 const updateDocument = async (id, objectData) => {
   return knex.select().table('documents')
-    .where('u_id', id)
+    .where('id', id)
     .update(objectData)
 }
 
 const deleteDocument = async (id) => {
   return knex.select().table('documents')
-    .where('u_id', id)
+    .where('id', id)
     .del()
 }
 
@@ -50,7 +50,7 @@ async function addColumnTrans (row) {
   }
   const transaction = await knex.select()
     .from('transactions')
-    .where('document_id', row.u_id)
+    .where('document_id', row.id)
     .first()
   const categoryName = await knex.select('name')
     .from('categories')
@@ -59,7 +59,7 @@ async function addColumnTrans (row) {
   return {
     ...row,
     transaction,
-    category_name: categoryName || ''
+    category_name: categoryName.name || ''
   }
 }
 

@@ -86,6 +86,26 @@ contract DocumentManager {
         }
     }
 
+    function privateDocument(
+        uint documentId
+    )
+        public
+    {
+        if (msg.sender == documents[documentId].owner) {
+            documents[documentId].status = Status.CLOSE;
+        }
+    }
+
+    function publicDocument(
+        uint documentId
+    )
+        public
+    {
+        if (msg.sender == documents[documentId].owner) {
+            documents[documentId].status = Status.PENDDING;
+        }
+    }
+
     function deleteDocument(
         uint documentId
     )

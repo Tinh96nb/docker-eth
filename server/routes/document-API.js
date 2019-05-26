@@ -92,6 +92,30 @@ router.put('/:id', async function updateDoc (req, res, next) {
   return contractApi.updateDocument(params, res)
 })
 
+router.post('/change-status', async function changeStatusDocument (req, res, next) {
+  const { id, status } = req.body
+  const listStatus = [statusDocument.PENDDING, statusDocument.CLOSED]
+  if (!id) {
+    return res.status(400).json({ message: 'Id is required!' })
+  }
+  if (listStatus.indexOf(parseInt(status, 10)) === -1) {
+    return res.status(400).json({ message: 'Status is invalid!' })
+  }
+  const address = res.locals.member.address
+  const params = {
+    id,
+    address,
+    status
+  }
+  const cb = async (data) => {
+    if (!data) { return res.status(400).json({ message: 'Can not change status!' }) }
+    await documentRepo.changeStatus(id, status)
+    const doc = await documentRepo.getDocById(id)
+    return res.json(doc)
+  }
+  contractApi.changeDocumentStatus(params, cb)
+})
+
 router.get('/file/:docId', async function downloadDoc (req, res, next) {
   const { docId } = req.params
   const docInfo = await documentRepo.getDocById(docId)

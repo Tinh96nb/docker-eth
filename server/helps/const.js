@@ -1,6 +1,6 @@
 const statusDocument = {
   PENDDING: 0,
-  CLOSE: 1,
+  CLOSED: 1,
   ACEPTED: 2,
   REJECTED: 3
 }

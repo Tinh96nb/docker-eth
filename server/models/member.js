@@ -10,6 +10,14 @@ const findMemberByAddress = async (memberAddress) => {
     .then(getNumdoc)
 }
 
+const findMemberById = async (id) => {
+  return knex.select().from('members')
+    .where('id', id)
+    .first()
+    .then(getBalance)
+    .then(getNumdoc)
+}
+
 const createNewMember = async (objData) => {
   return knex('members').insert(objData)
 }
@@ -26,8 +34,14 @@ const getListMember = async () => {
 
 const changeStatus = async (id, status) => {
   return knex.select().table('members')
-    .where(id)
+    .where('id', id)
     .update({ status })
+}
+
+const getAddressAdmin = async () => {
+  return knex.select('address').table('members')
+    .where('role', 'admin')
+    .first()
 }
 
 async function getBalance (member) {
@@ -42,7 +56,7 @@ async function getBalance (member) {
 async function getNumdoc (member) {
   if (!member) return null
   const result = await knex('documents')
-    .count('u_id as numDoc')
+    .count('id as numDoc')
     .where('owner', member.address).first()
 
   return {
@@ -54,5 +68,7 @@ module.exports = {
   findMemberByAddress,
   getListMember,
   changeStatus,
-  createNewMember
+  createNewMember,
+  getAddressAdmin,
+  findMemberById
 }
