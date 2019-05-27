@@ -105,15 +105,15 @@ router.post('/change-status', async function changeStatusDocument (req, res, nex
   const params = {
     id,
     address,
-    status
+    status: parseInt(status, 10)
   }
   const cb = async (data) => {
     if (!data) { return res.status(400).json({ message: 'Can not change status!' }) }
-    await documentRepo.changeStatus(id, status)
+    await documentRepo.changeStatus(id, data.status)
     const doc = await documentRepo.getDocById(id)
     return res.json(doc)
   }
-  contractApi.changeDocumentStatus(params, cb)
+  contractApi.changeStatusDocument(params, cb)
 })
 
 router.get('/file/:docId', async function downloadDoc (req, res, next) {

@@ -65,31 +65,44 @@ async function grantDocument (params, cb) {
   const contract = await getContract()
   contract.methods
     .grantDocument(params.id, params.status)
-    .send({ from: params.address, gas: 3000000 }, (err, tranHash) => {
+    .send({ from: params.address, gas: 3000000 }, async (err, tranHash) => {
       if (err) {
         console.log(err)
         return cb(null)
       }
-      return cb(tranHash)
+      const docInfoFromBC = await contract.methods
+        .getDocumentByIndex(params.id)
+        .call({ from: params.address })
+      const res = {
+        status: docInfoFromBC.status.toString()
+      }
+      return cb(res)
     })
 }
 
 async function changeStatusDocument (params, cb) {
   const contract = await getContract()
-  let query = contract.methods
-  if (params.status === statusDocument.CLOSED) {
-    query.privateDocument(params.id)
-  } else if (params.status === statusDocument.PENDDING) {
-    query.publicDocument(params.id)
+  const res = async (err, tranHash) => {
+    if (err) {
+      console.log(err)
+      return cb(null)
+    }
+    const docInfoFromBC = await contract.methods
+      .getDocumentByIndex(params.id)
+      .call({ from: params.address })
+    const res = {
+      status: docInfoFromBC.status.toString()
+    }
+    return cb(res)
   }
-  query
-    .send({ from: params.address, gas: 3000000 }, (err, tranHash) => {
-      if (err) {
-        console.log(err)
-        return cb(null)
-      }
-      return cb(tranHash)
-    })
+  if (params.status === statusDocument.CLOSED) {
+    contract.methods
+      .privateDocument(params.id)
+      .send({ from: params.address, gas: 3000000 }, res)
+  } else if (params.status === statusDocument.PENDDING) {
+    contract.methods.publicDocument(params.id)
+      .send({ from: params.address, gas: 3000000 }, res)
+  }
 }
 
 async function deleteDocument (params, res) {

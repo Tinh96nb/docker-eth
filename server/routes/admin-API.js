@@ -68,7 +68,7 @@ router.post('/document/change-status', async function changeStatusDocument (req,
   }
   const cb = async (data) => {
     if (!data) { return res.status(400).json({ message: 'Can not change status!' }) }
-    await docRepo.changeStatus(id, status)
+    await docRepo.changeStatus(id, data.status)
     const doc = await docRepo.getDocById(id)
     return res.json(doc)
   }
