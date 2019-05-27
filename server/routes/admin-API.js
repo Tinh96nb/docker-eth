@@ -72,7 +72,7 @@ router.post('/document/change-status', async function changeStatusDocument (req,
     const doc = await docRepo.getDocById(id)
     return res.json(doc)
   }
-  contractApi.changeDocumentStatus(params, cb)
+  contractApi.grantDocument(params, cb)
 })
 
 router.post('/categories/', async function createCategory (req, res, next) {

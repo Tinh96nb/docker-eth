@@ -1,12 +1,14 @@
 const { web3, getContract } = require('../../ethereum/provider')
 const documentRepo = require('../models/document')
 const transRepo = require('../models/transaction')
+const { statusDocument } = require('../helps/const')
 
 module.exports = {
   getAccounts,
   getBalance,
   newDocument,
-  changeDocumentStatus,
+  grantDocument,
+  changeStatusDocument,
   createNewAcc,
   deleteDocument,
   updateDocument,
@@ -59,10 +61,28 @@ async function newDocument (params, res) {
     })
 }
 
-async function changeDocumentStatus (params, cb) {
+async function grantDocument (params, cb) {
   const contract = await getContract()
   contract.methods
     .grantDocument(params.id, params.status)
+    .send({ from: params.address, gas: 3000000 }, (err, tranHash) => {
+      if (err) {
+        console.log(err)
+        return cb(null)
+      }
+      return cb(tranHash)
+    })
+}
+
+async function changeStatusDocument (params, cb) {
+  const contract = await getContract()
+  let query = contract.methods
+  if (params.status === statusDocument.CLOSED) {
+    query.privateDocument(params.id)
+  } else if (params.status === statusDocument.PENDDING) {
+    query.publicDocument(params.id)
+  }
+  query
     .send({ from: params.address, gas: 3000000 }, (err, tranHash) => {
       if (err) {
         console.log(err)
