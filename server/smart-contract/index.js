@@ -1,7 +1,7 @@
 const { web3, getContract } = require('../../ethereum/provider')
+const { statusDocument } = require('../helps/const')
 const documentRepo = require('../models/document')
 const transRepo = require('../models/transaction')
-const { statusDocument } = require('../helps/const')
 
 module.exports = {
   getAccounts,

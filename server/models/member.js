@@ -22,8 +22,15 @@ const createNewMember = async (objData) => {
   return knex('members').insert(objData)
 }
 
-const getListMember = async () => {
-  return knex.select().table('members')
+const getListMember = async ({ status = null, role = null }) => {
+  let query = knex.select().from('members')
+  if (status) {
+    query = query.where('status', status)
+  }
+  if (role) {
+    query = query.where('role', role)
+  }
+  return query
     .then(async (rows) => {
       return Promise.all(rows.map(async (row) => getBalance(row)))
     })

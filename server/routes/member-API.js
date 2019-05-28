@@ -13,7 +13,7 @@ router.post('/me', async (req, res, next) => {
 })
 
 router.get('/', async (req, res, next) => {
-  const members = await memberRepo.getListMember()
+  const members = await memberRepo.getListMember(req.query)
   res.json(members)
 })
 
