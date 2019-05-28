@@ -6,6 +6,7 @@ const initDb = async () => {
   await knex('transactions').truncate()
   await knex('documents').truncate()
   await knex('members').truncate()
+  await knex('categories').truncate()
 }
 
 const insertMembers = async () => {
