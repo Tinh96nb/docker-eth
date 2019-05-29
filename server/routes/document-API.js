@@ -15,7 +15,7 @@ router.post('/', async function createDoc (req, res, next) {
     description = ''
   } = req.body
   if (!file_content.length) {
-    res.status(400).json({ message: 'file input required!' })
+    return res.status(400).json({ message: 'file input required!' })
   }
   const base64File = file_content.split(',')[1]
   const hash = sha1(base64File)
@@ -42,7 +42,7 @@ router.get('/:id', async function getViewDoc (req, res, next) {
   const { id } = req.params
   const document = await documentRepo.getDocById(id)
   if (!document) {
-    res.status(400).json({ message: 'Document not found!' })
+    return res.status(400).json({ message: 'Document not found!' })
   }
   res.json(document)
 })
@@ -51,7 +51,7 @@ router.delete('/:id', async function deleteDoc (req, res, next) {
   const { id } = req.params
   const document = await documentRepo.getDocById(id)
   if (!document) {
-    res.status(400).json({ message: 'Document not found!' })
+    return res.status(400).json({ message: 'Document not found!' })
   }
   const params = {
     docId: id,
@@ -64,7 +64,7 @@ router.put('/:id', async function updateDoc (req, res, next) {
   const { id } = req.params
   const document = await documentRepo.getDocById(id)
   if (!document) {
-    res.status(400).json({ message: 'Document not found!' })
+    return res.status(400).json({ message: 'Document not found!' })
   }
   const {
     name = document.name,
@@ -120,7 +120,7 @@ router.get('/file/:docId', async function downloadDoc (req, res, next) {
   const { docId } = req.params
   const docInfo = await documentRepo.getDocById(docId)
   if (!docInfo) {
-    res.status(400).json({ message: 'Document not found!' })
+    return res.status(400).json({ message: 'Document not found!' })
   }
   // neu status open hoac owner thi moi dc xem
   if (docInfo.status === statusDocument.ACEPTED ||
@@ -133,7 +133,7 @@ router.get('/file/:docId', async function downloadDoc (req, res, next) {
     const download = Buffer.from(base64File.toString('utf-8'), 'base64')
     res.end(download)
   }
-  res.status(403).json({ message: `You don't have permission to access` })
+  return res.status(403).json({ message: `You don't have permission to access` })
 })
 
 module.exports = router
