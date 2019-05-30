@@ -10,4 +10,4 @@ RUN npm install -g ganache-cli
 ARG BALANCE
 # set the command ganache-cli -h 0.0.0.0
 # for docker ganache-cli host on 0.0.0.0
-CMD ["ganache-cli","-h","0.0.0.0","--account","0xf2dd644cceea95ae649012ad6619f548476d0adec798df6234b933b94e2fb97d,200000000000000000000"]
+CMD ["ganache-cli","-h","0.0.0.0","-m","-d"]
