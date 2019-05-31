@@ -12,7 +12,7 @@ const dataSeed = {
   nameDoc: 'name doc',
   hashContent: 'this is hash file',
   cryptLink: 'link ipfs',
-  category: 'category'
+  category: '1'
 }
 
 contract('DocumentManager', async ([owner, mem]) => {
@@ -96,7 +96,7 @@ contract('DocumentManager', async ([owner, mem]) => {
       nameDoc: 'name doc change',
       hashContent: 'this is hash file',
       cryptLink: 'link ipfs',
-      category: 'category'
+      category: '1'
     }
     await documentManager.updateDocument(
       dataChange.idDoc, dataChange.nameDoc, dataChange.hashContent, dataChange.cryptLink, dataChange.category,

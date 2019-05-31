@@ -135,7 +135,7 @@ contract DocumentManager {
             documents[documentId].name = _name;
             documents[documentId].contentHash = _contentHash;
             documents[documentId].linkIpfsCrypt = _linkIpfsCrypt;
-            documents[documentId].category = _category;
+            documents[documentId].category = 3;
             documents[documentId].status = Status.PENDDING;
 
             //emit

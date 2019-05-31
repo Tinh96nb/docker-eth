@@ -106,6 +106,10 @@ router.post('/change-status', async function changeStatusDocument (req, res, nex
   if (listStatus.indexOf(parseInt(status, 10)) === -1) {
     return res.status(400).json({ message: 'Status is invalid!' })
   }
+  const document = await documentRepo.getDocById(id)
+  if (!document) {
+    return res.status(400).json({ message: 'Document not found!' })
+  }
   const address = res.locals.member.address
   const params = {
     id,

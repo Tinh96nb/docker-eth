@@ -57,6 +57,13 @@ router.post('/document/change-status', async function changeStatusDocument (req,
   if (!id) {
     return res.status(400).json({ message: 'Id is required!' })
   }
+  const document = await docRepo.getDocById(id)
+  if (!document) {
+    return res.status(400).json({ message: 'Document not found!' })
+  }
+  if (document.status === statusDocument.CLOSED) {
+    return res.status(400).json({ message: 'Document was closed' })
+  }
   if (listStatus.indexOf(parseInt(status, 10)) === -1) {
     return res.status(400).json({ message: 'Status is invalid!' })
   }

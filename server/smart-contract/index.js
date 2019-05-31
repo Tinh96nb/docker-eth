@@ -70,11 +70,8 @@ async function grantDocument (params, cb) {
         console.log(err)
         return cb(null)
       }
-      const docInfoFromBC = await contract.methods
-        .getDocumentByIndex(params.id)
-        .call({ from: params.address })
       const res = {
-        status: docInfoFromBC.status.toString()
+        status: params.status
       }
       return cb(res)
     })
@@ -87,11 +84,8 @@ async function changeStatusDocument (params, cb) {
       console.log(err)
       return cb(null)
     }
-    const docInfoFromBC = await contract.methods
-      .getDocumentByIndex(params.id)
-      .call({ from: params.address })
     const res = {
-      status: docInfoFromBC.status.toString()
+      status: params.status
     }
     return cb(res)
   }
@@ -134,8 +128,8 @@ async function updateDocument (params, res) {
         name: docInfoFromBC.name,
         content_hash: docInfoFromBC.contentHash,
         link_ipfs_crypt: docInfoFromBC.linkIpfsCrypt,
-        category_id: docInfoFromBC.category.toString(),
-        status: docInfoFromBC.status,
+        category_id: params.category,
+        status: statusDocument.PENDDING,
         size: params.size,
         description: params.description
       }
