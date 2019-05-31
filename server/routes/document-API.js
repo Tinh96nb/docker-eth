@@ -6,6 +6,11 @@ const { statusDocument } = require('../helps/const')
 const contractApi = require('../smart-contract')
 const documentRepo = require('../models/document')
 
+router.get('/sumary', async function sumary (req, res) {
+  const sumary = await documentRepo.sumary()
+  res.json(sumary)
+})
+
 router.post('/', async function createDoc (req, res, next) {
   const {
     name = '',

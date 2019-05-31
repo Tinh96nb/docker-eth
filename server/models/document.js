@@ -65,6 +65,16 @@ async function addColumnTrans (row) {
     category_name: (categoryName && categoryName.name) || ''
   }
 }
+const sumary = async () => {
+  const numDoc = await knex('documents').count('id as number').first()
+  const numMem = await knex('members').count('id as number').first()
+  const numCate = await knex('categories').count('id as number').first()
+  return {
+    document: numDoc.number,
+    member: numMem.number,
+    category: numCate.number
+  }
+}
 
 module.exports = {
   listDocument,
@@ -72,5 +82,6 @@ module.exports = {
   createDocument,
   changeStatus,
   updateDocument,
-  deleteDocument
+  deleteDocument,
+  sumary
 }
