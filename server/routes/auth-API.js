@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ message: `You don't have permission to access. Please contact administrator for more information` })
   }
   if (user.status === 0) {
-    return res.status(400).json({ message: `Banned` })
+    return res.status(400).json({ message: `This account has been blocked` })
   }
   const payload = {
     id: user.id,
