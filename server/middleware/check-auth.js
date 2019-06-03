@@ -8,14 +8,14 @@ const checkAuth = () => async (req, res, next) => {
     requestToken = accessToken
   } else {
     if (!req.headers || !req.headers.authorization) {
-      return res.status(400).json({ message: 'Token is required!' })
+      return res.status(401).json({ message: 'Token is required!' })
     }
     requestToken = req.headers.authorization.split(' ')[1]
   }
   // check valid token
   const token = jwt.verify(requestToken)
   if (!token) {
-    res.status(400).json({ message: 'Token is invalid!' })
+    res.status(401).json({ message: 'Token is invalid!' })
     return false
   }
   // check in database

@@ -3,20 +3,20 @@ const router = express.Router()
 const jwt = require('../helps/jwt')
 const memberRepo = require('../models/member')
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', async (req, res) => {
   if (!req.body) {
-    res.status(400).json({ message: 'Address is required.' })
-    return next()
+    return res.status(400).json({ message: 'Address is required.' })
   }
   const { address } = req.body
   if (!address) {
-    res.status(400).json({ message: 'Address is required.' })
-    return next()
+    return res.status(400).json({ message: 'Address is required.' })
   }
   const user = await memberRepo.findMemberByAddress(address)
   if (!user) {
-    res.status(400).json({ message: `You don't have permission to access!` })
-    return next()
+    return res.status(400).json({ message: `You don't have permission to access. Please contact administrator for more information` })
+  }
+  if (user.status === 0) {
+    return res.status(400).json({ message: `Banned` })
   }
   const payload = {
     id: user.id,
