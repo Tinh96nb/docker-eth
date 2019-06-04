@@ -20,7 +20,10 @@ router.post('/', async function createDoc (req, res, next) {
     description = ''
   } = req.body
   if (!file_content.length) {
-    return res.status(400).json({ message: 'file input required!' })
+    return res.status(400).json({ message: 'File input is required!' })
+  }
+  if (!name.length) {
+    return res.status(400).json({ message: 'Name file is required!' })
   }
   const base64File = file_content.split(',')[1]
   const hash = sha1(base64File)
