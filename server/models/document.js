@@ -2,7 +2,7 @@
 
 const knex = require('../knex')
 
-const listDocument = async ({ name = null, owner = null, categoryId = null, status = null }) => {
+const listDocument = async ({ name = null, owner = null, category_id = null, status = null }) => {
   let query = knex.select().from('documents')
   if (name) {
     query = query.where('name', 'like', `%${name}%`)
@@ -13,8 +13,8 @@ const listDocument = async ({ name = null, owner = null, categoryId = null, stat
   if (status) {
     query = query.where('status', status)
   }
-  if (categoryId) {
-    query = query.where('category_id', categoryId)
+  if (category_id) {
+    query = query.where('category_id', category_id)
   }
   return query.then(async (rows) => {
     return Promise.all(rows.map(async (row) => addColumnTrans(row)))
