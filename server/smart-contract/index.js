@@ -12,15 +12,33 @@ module.exports = {
   createNewAcc,
   deleteDocument,
   updateDocument,
-  transferToMember
+  transferToMember,
+  getLatestBlock
 }
 
 async function getAccounts () {
   return web3.eth.getAccounts()
 }
 
+async function getLatestBlock (number = 10) {
+  const numberBlock = await web3.eth.getBlockNumber()
+  const blocks = []
+  const transactions = []
+  for (let i = 0; i < numberBlock; i++) {
+    const block = await web3.eth.getBlock(numberBlock - i)
+    if (block) {
+      blocks.push(block)
+      block.transactions.forEach(async trans => {
+        transactions.push(await web3.eth.getTransaction(trans))
+      })
+    }
+  }
+  return { blocks, transactions }
+}
+
 async function getBalance (address) {
-  return web3.eth.getBalance(address)
+  const gwei = await web3.eth.getBalance(address)
+  return web3.utils.fromWei(gwei, 'ether')
 }
 
 async function newDocument (params, res) {

@@ -7,6 +7,7 @@ const cors = require('cors')
 const app = express()
 
 const authRouters = require('./routes/auth-API')
+const dashboardRoutes = require('./routes/dashboard-API')
 const documentRoutes = require('./routes/document-API')
 const categoryRouter = require('./routes/category-API')
 const memberRoutes = require('./routes/member-API')
@@ -26,6 +27,7 @@ app.use(
 )
 
 app.use('/', authRouters)
+app.use('/', checkAuth, dashboardRoutes)
 app.use('/documents', checkAuth, documentRoutes)
 app.use('/categories', checkAuth, categoryRouter)
 app.use('/members', checkAuth, memberRoutes)
